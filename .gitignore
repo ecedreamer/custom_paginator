@@ -1,0 +1,7 @@
+venv
+__pycache__
+bookdb.sqlite3-shm
+bookdb.sqlite3-wal
+.idea
+.vscode
+.*_cache
