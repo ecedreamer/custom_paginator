@@ -12,8 +12,11 @@ class PaginatorTest(unittest.TestCase):
     
     def test_validate_page_number(self):
         self.assertTrue(self.paginator.validate_page_number(4))
+        self.assertTrue(self.paginator.validate_page_number(1))
+        with self.assertRaises(TypeError):
+            self.paginator.validate_page_number(3.4)
         with self.assertRaises(IndexError):
-            self.assertFalse(self.paginator.validate_page_number(6))
+            self.paginator.validate_page_number(6)
     
     def test_page_count(self):
         self.assertEqual(self.paginator.page_count(), 5)

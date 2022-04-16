@@ -22,10 +22,7 @@ class BookModel:
 def get_connection():
     """ connect to sqlite3 database and return connection object """
     try:
-        conn = sqlite3.connect("examples/bookdb.sqlite3", isolation_level=None)
-        conn.execute('pragma journal_mode=wal')
-        conn.execute("create table if not exists book(id integer primary key autoincrement, isbn, title, author, pub_year, publisher, image_url_s, image_url_m, image_url_n) ")
-        return conn
+        return sqlite3.connect("examples/bookdb.sqlite3", isolation_level=None)
     except sqlite3.Error as er:
         sys.exit(1)
 
@@ -36,7 +33,7 @@ def fetch_data(conn, offset=0, limit=25):
 
 
 def get_pagination_info(total_count, page_size, page_number):
-    # calculate start_index
+    # takes user input and total count and returns pagination info
     page_info = {"page_count": ceil(total_count/page_size)}
     page_info["start_index"] = (page_number - 1) * page_size
     page_info["next_page_number"] = page_number + 1 if page_number < page_info["page_count"] else None
@@ -66,5 +63,5 @@ def main(paginate_by=100, page_number=1):
 if __name__ == "__main__":
     """ change the following value as desired """
     paginate_by = 100
-    page_number = 2497
+    page_number = 2496
     main(paginate_by=paginate_by, page_number=page_number)

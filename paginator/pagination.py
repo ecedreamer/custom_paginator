@@ -8,7 +8,9 @@ class Paginator:
         self.page_size = page_size
         self.object_count = len(self.object_list)
         
-    def validate_page_number(self, number):
+    def validate_page_number(self, number: int):
+        if not isinstance(number, int):
+            raise TypeError
         if number <= self.page_count() and number > 0:
             return number
         else:
@@ -39,10 +41,17 @@ class Page:
     def start_index(self):
         return self.paginator.page_size * (self.page_number - 1) + 1
     
-    def has_next_page(self):
+    def end_index(self):
+        end_index = self.paginator.page_size * self.page_number
+        if len(self._object_list) < self.paginator.page_size:
+            return self.paginator.page_size * (self.page_number - 1) + len(self._object_list)
+        else:
+            return end_index
+    
+    def has_next_page(self) -> bool:
         return self.page_number < self.paginator.page_count()
     
-    def has_previous_page(self):
+    def has_previous_page(self) -> bool:
         return self.page_number > 1
     
     def next_page_number(self):
@@ -51,10 +60,3 @@ class Page:
     def previous_page_number(self):
         return self.paginator.validate_page_number(self.page_number - 1)
             
-    def end_index(self):
-        end_index = self.paginator.page_size * self.page_number
-        if len(self._object_list) < self.paginator.page_size:
-            return self.paginator.page_size * (self.page_number - 1) + len(self._object_list)
-        else:
-            return end_index
-        

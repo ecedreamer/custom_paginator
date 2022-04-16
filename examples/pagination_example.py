@@ -8,10 +8,7 @@ from paginator.pagination import Paginator
 
 
 def get_connection():
-    conn = sqlite3.connect("examples/bookdb.sqlite3", isolation_level=None)
-    conn.execute('pragma journal_mode=wal')
-    conn.execute("create table if not exists book(id integer primary key autoincrement, isbn, title, author, pub_year, publisher, image_url_s, image_url_m, image_url_n) ")
-    return conn
+    return sqlite3.connect("examples/bookdb.sqlite3")
 
 
 def fetch_data(conn, limit=25):
@@ -23,13 +20,16 @@ def get_paginated_data(conn, paginate_by):
     return Paginator(object_list, paginate_by)
 
 
-def main():
+def main(paginate_by, page_number):
     conn = get_connection()
-    paginator_obj = get_paginated_data(conn, 100)
-    page = paginator_obj.page(25)
+    paginator_obj = get_paginated_data(conn, paginate_by)
+    page = paginator_obj.page(page_number)
     print("Object Count: ", len(page.object_list()))
     print("Total Page: ", paginator_obj.page_count())
+    print("Data: ", page.object_list())
 
 
 if __name__ == "__main__":
-    main()
+    paginate_by = 100
+    page_number = 2497
+    main(paginate_by, page_number)
