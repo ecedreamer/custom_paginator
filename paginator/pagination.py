@@ -57,3 +57,4 @@ class Page:
             return self.paginator.page_size * (self.page_number - 1) + len(self._object_list)
         else:
             return end_index
+        
