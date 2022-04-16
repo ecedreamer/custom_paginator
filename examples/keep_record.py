@@ -20,7 +20,7 @@ def read_csv(conn):
             data = line.rstrip("\n").split(";")
             if len(data) == 8:
                 dataset.append(data)
-            if index % 500 == 0:
+            if index % 1000 == 0:
                 insert_data(conn, dataset)
                 dataset = []
 

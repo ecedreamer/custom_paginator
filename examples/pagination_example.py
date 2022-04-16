@@ -26,8 +26,9 @@ def get_paginated_data(conn, paginate_by):
 def main():
     conn = get_connection()
     paginator_obj = get_paginated_data(conn, 100)
-    page = paginator_obj.page(1)
-    print(len(page.sliced_object_list()))
+    page = paginator_obj.page(25)
+    print("Object Count: ", len(page.object_list()))
+    print("Total Page: ", paginator_obj.page_count())
 
 
 if __name__ == "__main__":
