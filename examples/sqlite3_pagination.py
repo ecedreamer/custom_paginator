@@ -3,6 +3,7 @@ sys.path.append("./")
 from math import ceil
 import sqlite3
 from dataclasses import dataclass
+from paginator.pagination import SqlPaginator
 
 
 ########################### model class to represent book ######################################
@@ -32,36 +33,24 @@ def fetch_data(conn, offset=0, limit=25):
     return conn.execute("SELECT * FROM book ORDER BY id LIMIT ? OFFSET ?", (limit, offset))
 
 
-def get_pagination_info(total_count, page_size, page_number):
-    # takes user input and total count and returns pagination info
-    page_info = {"page_count": ceil(total_count/page_size)}
-    page_info["start_index"] = (page_number - 1) * page_size
-    page_info["next_page_number"] = page_number + 1 if page_number < page_info["page_count"] else None
-    page_info["prev_page_number"] = page_number - 1 if page_number > 1 else None
-    return page_info
-
-
-def get_paginated_data(conn, page_size, page_number):
-    # calculate start_index
-    total_count = conn.execute("SELECT COUNT() from book").fetchone()[0]
-    pagination_info = get_pagination_info(total_count, page_size, page_number)
-    # call fetch_data
-    fetched_data = fetch_data(conn, offset=pagination_info.get("start_index"), limit=page_size)
+def get_paginated_data(conn, page):
+    fetched_data = fetch_data(conn, offset=page.offset, limit=page.limit)
     final_result = [BookModel(*row) for row in fetched_data]
-    # add the result and return 
-    pagination_info["page_size"] = len(final_result)
-    pagination_info["object_list"] = final_result
-    return pagination_info
+    return final_result
 
 
 def main(paginate_by=100, page_number=1):
     conn = get_connection()
-    result = get_paginated_data(conn, paginate_by, page_number)
-    print(result)
+    total_count = conn.execute("SELECT COUNT() from book").fetchone()[0]
+    paginator = SqlPaginator(total_count=total_count, page_size=paginate_by)
+    page = paginator.page(page_number, get_paginated_data, conn=conn)
+    print(page.object_list())
+    print(len(page.object_list()))
+    print(page.has_next_page())
 
 
 if __name__ == "__main__":
     """ change the following value as desired """
     paginate_by = 100
-    page_number = 2496
+    page_number = 2495
     main(paginate_by=paginate_by, page_number=page_number)
