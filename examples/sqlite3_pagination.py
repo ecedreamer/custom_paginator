@@ -43,7 +43,7 @@ def main(paginate_by=100, page_number=1):
     conn = get_connection()
     total_count = conn.execute("SELECT COUNT() from book").fetchone()[0]
     paginator = SqlPaginator(total_count=total_count, page_size=paginate_by)
-    page = paginator.page(page_number, get_paginated_data, conn=conn)
+    page = paginator.page(page_number, db_fetch_func=get_paginated_data, conn=conn)
     print(page.object_list())
     print(len(page.object_list()))
     print(page.has_next_page())
