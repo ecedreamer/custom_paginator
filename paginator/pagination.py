@@ -111,9 +111,9 @@ class SqlPage:
     
     def end_index(self):
         if self.page_number == self.paginator.page_count():
-            self.paginator.total_count - 1
+            return self.paginator.total_count
         else:
-            return self.start_index + self.object_count
+            return self.page_number * self.paginator.page_size
     
     def has_next_page(self) -> bool:
         return self.page_number < self.paginator.page_count()
