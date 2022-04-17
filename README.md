@@ -1,5 +1,10 @@
 This paginator module accepts user input object_list, page_size and page_number and gives paginated result.
 
+When data is less in the database, the Paginator class will do its task in time. But when data in database grows in the database, the pagination tasks will be slower since it must fetch all data, send it to paginator class and then paginator class should handle too much data. So this method may not be efficient in case of speed and memory.
+
+So I have made another paginator class for database data, SqlPaginator class. This paginator class accepts total object count in the database table and the db_fetcher function, fetches only required data from the database by utilizing LIMIT and OFFSET clause of sql. It has one disadvantage that it should hit a database to know total row count before applying pagination. 
+
+
 **Basic Usage** 
 
     Normal Paginator class

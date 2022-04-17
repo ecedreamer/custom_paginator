@@ -76,7 +76,7 @@ class SqlPaginator:
             raise IndexError
         
     def page(self, page_number, db_fetch_func, **kwargs):
-        """ accepts paginator, page_number, and db_query function and its keyword arguments """
+        """ accepts paginator, page_number, and db_fetch_func and its keyword arguments """
         page_number = self.validate_page_number(page_number)
         return SqlPage(self, page_number, db_fetch_func, **kwargs)
     
@@ -88,7 +88,10 @@ class SqlPaginator:
         
 
 class SqlPage:
-    """ accepts paginator, page_number, and db_query function and its keyword arguments """
+    """ 
+    accepts paginator, page_number, db_fetch_func and its keyword arguments 
+    your db_Fetch_func must accepts page object which will be called with the page object and other kwargs from here.
+    """
     def __init__(self, paginator: SqlPaginator, page_number, db_fetch_func, **kwargs) -> None:
         self.paginator = paginator
         self.page_number = self.paginator.validate_page_number(page_number)
