@@ -1,7 +1,9 @@
 This paginator module accepts user input object_list, page_size and page_number and gives paginated result.
 
-** Usage ** 
-    ** Normal Paginator class **
+**Basic Usage** 
+
+    Normal Paginator class
+    -------------------------------------
     # import module 
     from paginator.pagination import Paginator
 
@@ -17,7 +19,10 @@ This paginator module accepts user input object_list, page_size and page_number 
     # get paginated data
     result = page.object_list()
 
-    ** SqlPaginator class **
+
+    SqlPaginator class
+    -------------------------------------
+    
     from paginator.pagination import SqlPaginator
 
     # make paginator object
@@ -36,11 +41,12 @@ To know usase, please view two examples in the example folder.
     * pagination_example.py 
     * sqlite3_pagination.py
 
-TO RUN EXAMPLES
+**TO RUN EXAMPLES**
 
 $ python examples/pagination_example.py
+
 $ python examples/sqlite3_pagination.py
 
-TO RUN TESTS
+**TO RUN TESTS**
 
 $ pytest tests
